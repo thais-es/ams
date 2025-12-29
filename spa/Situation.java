@@ -2,6 +2,7 @@ package spa; //R18
 import java.sql.Date;
 import java.util.HashMap;
 public class Situation implements IData {
+	private int idSituation;
 	private int idFamille;  
 	private String type;  
 	private String commentaire;  
@@ -26,7 +27,7 @@ public class Situation implements IData {
 		map.put("commentaire", fieldType.TEXT);
 		map.put("dateD", fieldType.DATE);
 		map.put("dateF", fieldType.DATE);
-		values = "(" + idFamille + "," + type  + "," +commentaire +","+ dateD + ","+ dateF +"')";
+		values = "(" + idSituation + ", " + idFamille + ", '" + type + "', '" + commentaire + "', '" + dateD + "', '" + dateF + "')";
 	}
 
 	@Override
@@ -54,6 +55,12 @@ public class Situation implements IData {
 	public String toString() {
 		return "Situation [idFamille=" + idFamille + ", type=" + type + ", commentaire=" + commentaire + ", dateD="
 				+ dateD + ", dateF=" + dateF + "]";
+	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idSituation;
 	}
 	
 }

@@ -50,6 +50,12 @@ public class Creneau implements IData{
 	public String toString() {
 		return "Creneau [idCreneau=" + idCreneau + ", heureD=" + heureD + ", heureF=" + heureF + "]";
 	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idCreneau;
+	}
 	
 	
 	

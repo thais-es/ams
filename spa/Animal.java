@@ -62,6 +62,12 @@ public class Animal implements IData {
 		return "Animal [idAnimal=" + idAnimal + ", nom=" + nom + ", arrive=" + arrive + ", type=" + type + ", race="
 				+ race + ", naissance=" + naissance + ", statut=" + statut + "]";
 	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idAnimal;
+	}
 	
 	
 }

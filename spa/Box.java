@@ -48,5 +48,11 @@ public class Box implements IData {
 	public String toString() {
 		return "Box [idBox=" + idBox + ", espece=" + espece + ", capMax=" + capMax + "]";
 	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idBox;
+	}
 	
 }

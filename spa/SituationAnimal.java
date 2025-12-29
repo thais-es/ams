@@ -10,6 +10,7 @@ public class SituationAnimal implements IData {
 		super();
 		this.idSituation = idSituation;
 		this.idAnimal = idAnimal;
+		map = new HashMap<>();
 	}
 
 	@Override

@@ -63,4 +63,10 @@ public class Benevole implements IData {
 		return true;
 	}
 
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idBenevole;
+	}
+
 }

@@ -17,4 +17,5 @@ public interface IData {
 	//METHODE PERMETTANT DE VERIFIER QUE LA TABLE ET L'INSTANCE PARTAGE LES MEMES ATTRIBUTS ET MEMES TYPES
 	//PREND EN PARAMETRE LA MAP ATTRIBUT/TYPE DE LA TABLE ...
 	public boolean check(HashMap<String, fieldType> tableStruct) ;
+	public int getId();
 }

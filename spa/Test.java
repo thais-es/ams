@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 
 public class Test {
-
+//pour incrementation automatique SERIAL PRIMARY KEY il faut l'utiliser car dans les fct insert on l'utilise
     public static void main(String[] args) {
         try {
             // Connexion à la base

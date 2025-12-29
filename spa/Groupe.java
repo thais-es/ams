@@ -49,6 +49,12 @@ public class Groupe implements IData {
 	public String toString() {
 		return "Groupe [idGrp=" + idGrp + ", idAct=" + idAct + ", idCreneau=" + idCreneau + "]";
 	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idGrp;
+	}
 	
 	
 }

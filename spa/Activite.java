@@ -17,6 +17,7 @@ public class Activite implements IData{
 		this.lieu = lieu;
 		this.nbMin = nbMin;
 	}
+	
 
 	@Override
 	public void getStruct() {
@@ -54,6 +55,13 @@ public class Activite implements IData{
 			}
 		}
 		return true;
+	}
+
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idAct;
 	}
 	
 	

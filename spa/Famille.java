@@ -14,10 +14,12 @@ public class Famille implements IData {
 		this.nom = nom;
 		this.mail = mail;
 		this.adresse = adresse;
+		getStruct();
 	}
 
-	@Override
+	@Override //pas de void? remplace par hashMap<string,fieldtype>?
 	public void getStruct() {
+		map = new HashMap<>();
 		map.put("idFamille", fieldType.INT);
 		map.put("nom", fieldType.VARCHAR);
 		map.put("mail", fieldType.VARCHAR);
@@ -42,6 +44,10 @@ public class Famille implements IData {
 				System.out.println("il manque : "+num);
 				return false;
 			}
+			if (tableStruct.get(num) != map.get(num)) {
+				System.out.println("Type incompatible pour : " + num); 
+			return false; 
+			}
 		}
 		return true;
 	}
@@ -50,6 +56,12 @@ public class Famille implements IData {
 	public String toString() {
 		return "Famille [idFamille=" + idFamille + ", nom=" + nom + ", mail=" + mail + ", adresse=" + adresse
 				+ "]";
+	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idFamille;
 	}
 
 	

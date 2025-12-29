@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class FicheAnimal implements IData {
 	private int idFiche;  
 	private int idAnimal;  
-	private Date soin;  
+	private Date dSoin;  
 	private String ordonnance;  
 	private String commentaire;  
 	private Date prochainRdv;  
@@ -19,7 +19,7 @@ public class FicheAnimal implements IData {
 		super();
 		this.idFiche = idFiche;
 		this.idAnimal = idAnimal;
-		this.soin = soin;
+		this.dSoin = soin;
 		this.ordonnance = ordonnance;
 		this.commentaire = commentaire;
 		this.prochainRdv = prochainRdv;
@@ -30,12 +30,12 @@ public class FicheAnimal implements IData {
 	public void getStruct() {
 		map.put("idFiche", fieldType.INT);
 		map.put("idAnimal", fieldType.INT);
-		map.put("soin", fieldType.DATE);
+		map.put("dSoin", fieldType.DATE);
 		map.put("ordonnance", fieldType.TEXT);
 		map.put("commentaire", fieldType.TEXT);
 		map.put("prochainRdv", fieldType.DATE);		
 		map.put("maladie", fieldType.VARCHAR);
-		values = "(" + idFiche + "," + idAnimal + ","+ soin + ","+ ordonnance +","+ commentaire + ","+prochainRdv+";" +maladie+"')";
+		values = "(" + idFiche + "," + idAnimal + ","+ dSoin + ","+ ordonnance +","+ commentaire + ","+prochainRdv+";" +maladie+"')";
 	}
 
 	@Override
@@ -61,9 +61,15 @@ public class FicheAnimal implements IData {
 
 	@Override
 	public String toString() {
-		return "FicheAnimal [idFiche=" + idFiche + ", idAnimal=" + idAnimal + ", soin=" + soin + ", ordonnance="
+		return "FicheAnimal [idFiche=" + idFiche + ", idAnimal=" + idAnimal + ", dSoin=" + dSoin + ", ordonnance="
 				+ ordonnance + ", commentaire=" + commentaire + ", prochainRdv=" + prochainRdv + ", maladie=" + maladie
 				+ "]";
+	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return idFiche;
 	}
 	
 	
