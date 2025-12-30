@@ -261,18 +261,123 @@ public class Gestion {
 		displayQuery(sql);
 	}
 /*GRPBENEVOLE
- * public boolean besoinBenevoles(int idCreno)
-
+ * public void besoinBenevoles(int idCreno)  // je lai mis en void pr savoir combien de benevole on a besoin  
 */
+	public void besoinBenevoles(int idCreno) throws SQLException{
+		String sql ="SELECT a.nbMin, COUNT(gb.idBenevole) AS nbBeneInscrits " +
+					"FROM Groupe g " +
+					"JOIN Activite a ON g.idAct=a.idAct"+
+					"LEFT JOIN GrpBenvole gb ON g.idGrp=gb.idGrp"+
+					"WHERE g.idCreneau =" + idCreno + " "+
+					"GROUP BY a.nbMin";
+		Statement st = laConnection.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		if(rs.next()) {
+			int nbMin=rs.getInt("nbMin");
+			int nbBeneInscrits =rs.getInt("nbBeneInscrits");
+			if(nbBeneInscrits<nbMin) {
+				int nbManque = nbMin-nbBeneInscrits;
+				System.out.println("Il manque " + nbManque + " bénévoles pour le créneau "+ idCreno);
+			}
+			else {
+				System.out.println("Il ne manque pas de bénévoles pour le créneau "+ idCreno);
+			}
+		}
+		else {
+			System.out.println("Il n'y a pas de groupes pour le créneau " + idCreno);  // jsp si on peut mettre une exception la ? 
+		}
+	}
+	
+
+	
 /*CRENAUX
  * public void inscrireParticipant(int idAct, int idParticipant, String role)
  * planing
  * afficher activite
  * remplacer une activite
 */
+	/*public void inscrireParticipant(int idAct, int idParticipant, String role) throws SQLException {
+		String sqlGrp="SELECT idGrp FROM Groupe WHERE idAct="+idAct;
+		Statement st = laConnection.createStatement();
+		ResultSet rs = st.executeQuery(sqlGrp);
+		if(!rs.next()){
+			System.out.println("Il n'y a ");
+		}
+	} /*
+	// A COMPLETER POUR LE ROLE 
+
 /*BOX
- * Ajouter un animal dans un box
+ * Ajouter un animal dans un box 
  * Améliorer capacité
  * Enlever / déplacer un animal*/
-
+	
+	//A voir si pour la date on met valueOf(LocalDate.now()); pour avoir direct la date 
+	public void ajoutAnimalBox(int idBox, int idAnimal, Date dateD) throws SQLException {
+		String sqlCptAnimaux="SELECT COUNT(*) AS nbAnimaux FROM BoxAnimal WHERE idBox= " +idBox;
+		Statement st = laConnection.createStatement();
+		ResultSet rs = st.executeQuery(sqlCptAnimaux);
+		int nbAnimaux=0;
+		if(rs.next()) {
+			nbAnimaux=rs.getInt("nbAnimaux");
+		}
+		rs.close();
+		
+		String sqlCapMax="SELECT capMax FROM Box WHERE idBox= "+ idBox;
+		ResultSet rsCapMax= st.executeQuery(sqlCapMax);
+		int capMax=0;
+		if(rsCapMax.next()) {
+			capMax=rs.getInt("capMax");
+		}		
+		rsCapMax.close();
+		
+		if(nbAnimaux>=capMax) {
+			System.out.println("Le Box" +idBox + "est plein");
+			st.close();
+			return;
+		}
+		String sqlajoutBoxAnimal="INSERT INTO BoxAnimal(idBox, idAnimal, dateD, dateF)"+
+								"VALUES (" + idBox +", "+idAnimal+", "+dateD+", "+"NULL )";
+		st.executeUpdate(sqlajoutBoxAnimal);
+		System.out.println("L'animal "+ idAnimal + " est ajouté dans le box " +idBox );
+		st.close();
+		
+	}
+	
+	//j'ai mis que la date de debut et de fin sont les memes 
+	public void deplacerAnimal(int idAnimal, int idAncienBox, int idNvBox, Date date) throws SQLException {
+		Statement st = laConnection.createStatement();
+		String sqlCptAnimaux="SELECT COUNT(*) AS nbAnimaux FROM BoxAnimal WHERE idBox= " +idNvBox;
+		ResultSet rs =st.executeQuery(sqlCptAnimaux);
+		int nbAnimaux=0;
+		if(rs.next()) {
+			nbAnimaux=rs.getInt("nbAnimaux");
+		}
+		rs.close();
+		String sqlCapMax="SELECT capMax FROM Box WHERE idBox= "+ idNvBox;
+		ResultSet rsCapMax= st.executeQuery(sqlCapMax);
+		
+		int capMax=0;
+		if(rsCapMax.next()) {
+			capMax=rs.getInt("capMax");
+		}		
+		rsCapMax.close();
+	
+		if(nbAnimaux>=capMax) {
+			System.out.println("Le Box" +idNvBox + "est plein, vous ne pouvez pas ajouté d'animaux");
+			st.close();
+			return;
+		}
+		String sqlModifAncienBox="UPDATE BoxAnimal SET dateF=' "+date + "' "+" WHERE idAnimal= "+ idAnimal+  " AND idBox = " +idAncienBox+ " AND dateF IS NULL";
+		int modifLigne=st.executeUpdate(sqlModifAncienBox);
+		if (modifLigne==0) {
+			System.out.println("L'animal"+ idAnimal +" n'est pas dans le box");
+			st.close();
+			return;
+		}
+		String sqlModifNvBox="INSERT INTO BoxAnimal (idBox, idAnimal, dateD, dateF) "+ 
+							"VALUES ("+ idNvBox+ ", "+ idAnimal+ ", '"+ date + "', NULL)";
+		st.execute(sqlModifNvBox);
+		System.out.println("Animal : " + idAnimal + ", Ancien box : "+ idAncienBox +", Nouveau Box : " + idNvBox);
+		st.close();
+	}
 }
