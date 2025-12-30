@@ -1,6 +1,7 @@
 package spa; //  R1
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.Map;
 public class BoxAnimal implements IData {
 	private int idBox; 
 	private int idAnimal;
@@ -84,6 +85,19 @@ public class BoxAnimal implements IData {
 		map.put("dateD", fieldType.DATE);
 		map.put("dateF", fieldType.DATE);		
 		values = "(" + idBox + "," + idAnimal + ",'" + dateD + "','" + dateF + "')";
+	}
+
+	@Override
+	public int getId() {
+		return -1; // Ou alors exception, a voir ce qu'on fait au final
+	}
+
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		Map<String, Integer> idBoxAni =new HashMap<>();
+		idBoxAni.put("idBox", idBox);
+		idBoxAni.put("idAnimal", idAnimal);
+		return idBoxAni;
 	}
 	
 	

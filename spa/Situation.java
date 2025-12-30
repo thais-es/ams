@@ -1,6 +1,7 @@
 package spa; //R18
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.Map;
 public class Situation implements IData {
 	private int idSituation;
 	private int idFamille;  
@@ -62,5 +63,9 @@ public class Situation implements IData {
 		// TODO Auto-generated method stub
 		return idSituation;
 	}
-	
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		// TODO Auto-generated method stub
+		return null;  // null ou exception à voir ce qu'on fait 
+	}
 }

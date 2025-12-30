@@ -1,5 +1,6 @@
 package spa; //R8
 import java.util.HashMap;
+import java.util.Map;
 public class Activite implements IData{
 	private int idAct;
 	private String type;  
@@ -60,8 +61,13 @@ public class Activite implements IData{
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
 		return idAct;
+	}
+
+
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		return null;  // null ou exception à voir ce qu'on fait 
 	}
 	
 	

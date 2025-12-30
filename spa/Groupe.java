@@ -1,6 +1,7 @@
 package spa; // R12
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Groupe implements IData {
 	private int idGrp;
@@ -56,5 +57,9 @@ public class Groupe implements IData {
 		return idGrp;
 	}
 	
-	
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		// TODO Auto-generated method stub
+		return null;  // null ou exception à voir ce qu'on fait 
+	}
 }

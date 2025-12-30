@@ -2,6 +2,7 @@ package spa;
 
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class FicheAnimal implements IData {
 	private int idFiche;  
@@ -72,5 +73,10 @@ public class FicheAnimal implements IData {
 		return idFiche;
 	}
 	
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		// TODO Auto-generated method stub
+		return null;  // null ou exception à voir ce qu'on fait 
+	}
 	
 }

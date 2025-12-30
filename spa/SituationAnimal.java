@@ -1,5 +1,6 @@
 package spa; //R19
 import java.util.HashMap;
+import java.util.Map;
 public class SituationAnimal implements IData {
 	private int idSituation;  
 	private int idAnimal;
@@ -45,6 +46,16 @@ public class SituationAnimal implements IData {
 	public String toString() {
 		return "SituationAnimal [idSituation=" + idSituation + ", idAnimal=" + idAnimal + "]";
 	}
+
+	@Override
+	public int getId() {
+		return idSituation;
+	}
 	
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		// TODO Auto-generated method stub
+		return null;  // null ou exception à voir ce qu'on fait 
+	}
 	
 }

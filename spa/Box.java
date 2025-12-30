@@ -1,5 +1,6 @@
 package spa; //R21
 import java.util.HashMap;
+import java.util.Map;
 
 public class Box implements IData {
 	private int idBox;  
@@ -54,5 +55,9 @@ public class Box implements IData {
 		// TODO Auto-generated method stub
 		return idBox;
 	}
-	
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		// TODO Auto-generated method stub
+		return null;  // null ou exception à voir ce qu'on fait 
+	}
 }

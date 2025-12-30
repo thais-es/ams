@@ -1,6 +1,8 @@
+
 package spa; // R10
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Creneau implements IData{
 	private int idCreneau;
@@ -57,7 +59,11 @@ public class Creneau implements IData{
 		return idCreneau;
 	}
 	
-	
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		// TODO Auto-generated method stub
+		return null;  // null ou exception à voir ce qu'on fait 
+	}
 	
 
 }

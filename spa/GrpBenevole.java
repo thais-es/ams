@@ -1,5 +1,6 @@
 package spa;  //R5
 import java.util.HashMap;
+import java.util.Map;
 public class GrpBenevole implements IData {
 	private int idGrp;
 	private int idBenevole;  
@@ -46,4 +47,16 @@ public class GrpBenevole implements IData {
 		return values;
 	}
 
+	@Override
+	public int getId() {
+		return -1; // Ou alors exception, a voir ce qu'on fait au final
+	}
+
+	@Override
+	public Map<String, Integer> getDeuxID() {
+		Map<String, Integer> idGrpBene =new HashMap<>();
+		idGrpBene.put("idGrp", idGrp);
+		idGrpBene.put("idBenevole", idBenevole);
+		return idGrpBene;
+	}
 }

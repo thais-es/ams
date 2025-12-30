@@ -1,6 +1,7 @@
 package spa;
 
 import java.util.HashMap;
+import java.util.Map;
 
 //LES CLASSES IMPLEMENTANT CETTE INTERFACE DOIVENT DISPOSEES DES ATTRIBUTS SUPPLEMENTAIRES : private String values ; private HashMap<String, fieldType> map;
 
@@ -18,4 +19,5 @@ public interface IData {
 	//PREND EN PARAMETRE LA MAP ATTRIBUT/TYPE DE LA TABLE ...
 	public boolean check(HashMap<String, fieldType> tableStruct) ;
 	public int getId();
+	public Map<String, Integer> getDeuxID();
 }
