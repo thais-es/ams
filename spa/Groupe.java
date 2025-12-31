@@ -15,6 +15,8 @@ public class Groupe implements IData {
 		this.idGrp = idGrp;
 		this.idAct = idAct;
 		this.idCreneau = idCreneau;
+		map = new HashMap<>();
+		getStruct();
 	}
 
 	@Override

@@ -1,31 +1,37 @@
 
 package spa; // R10
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Creneau implements IData{
-	private int idCreneau;
+	private int idCreneau;	
+	private Date jour;
 	private String heureD; //voir type heure ?
 	private String heureF;
 	private String values;
 	private HashMap<String, fieldType>map;
 	
-	public Creneau(int idCreneau, String heureD, String heureF) {
+	public Creneau(int idCreneau, String heureD,Date jour, String heureF) {
 		super();
 		this.idCreneau = idCreneau;
+		this.jour=jour;
 		this.heureD = heureD;
 		this.heureF = heureF;
+		map = new HashMap<>();
+		getStruct();
 	}
 
 	@Override
 	public void getStruct() {
 		map = new HashMap<>();
-		map.put("idCreneau", fieldType.INT);
-		map.put("heureD", fieldType.VARCHAR);
-		map.put("heureF", fieldType.VARCHAR);
+		map.put("idcreneau", fieldType.INT);
+		map.put("date", fieldType.DATE);
+		map.put("heured", fieldType.VARCHAR);
+		map.put("heuref", fieldType.VARCHAR);
 
-		values = "(" + idCreneau + "," + heureD + heureF + "')";
+		values = "(" + idCreneau + "," + jour + ","+ heureD + ", "+heureF + "')";
 	}
 	@Override
 	public String getValues() {
@@ -50,7 +56,7 @@ public class Creneau implements IData{
 
 	@Override
 	public String toString() {
-		return "Creneau [idCreneau=" + idCreneau + ", heureD=" + heureD + ", heureF=" + heureF + "]";
+		return "Creneau [idCreneau=" + idCreneau + ", jour=" +  jour +  ", heureD=" + heureD + ", heureF=" + heureF + "]";
 	}
 
 	@Override

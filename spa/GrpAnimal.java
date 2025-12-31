@@ -13,6 +13,8 @@ public class GrpAnimal implements IData {
 		super();
 		this.idGrp = idGrp;
 		this.idAnimal = idAnimal;
+		map = new HashMap<>();
+		getStruct();
 	}
 
 	@Override

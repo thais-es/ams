@@ -12,6 +12,8 @@ public class SituationAnimal implements IData {
 		this.idSituation = idSituation;
 		this.idAnimal = idAnimal;
 		map = new HashMap<>();
+		getStruct();
+
 	}
 
 	@Override

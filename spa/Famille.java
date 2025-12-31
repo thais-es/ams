@@ -4,29 +4,32 @@ import java.util.Map;
 public class Famille implements IData {
 	private int idFamille;
 	private String nom;  
+	private String tel;
 	private String mail;  
 	private String adresse;  
 	private String values;
 	private HashMap<String, fieldType>map;
 	
-	public Famille(int idFamille, String nom, String mail, String adresse) {
+	public Famille(int idFamille, String nom,String tel ,String mail, String adresse) {
 		super();
 		this.idFamille = idFamille;
 		this.nom = nom;
+		this.tel=tel;
 		this.mail = mail;
 		this.adresse = adresse;
+		map = new HashMap<>();
 		getStruct();
 	}
 
 	@Override //pas de void? remplace par hashMap<string,fieldtype>?
 	public void getStruct() {
-		map = new HashMap<>();
-		map.put("idFamille", fieldType.INT);
+		map.put("idfamille", fieldType.INT);
 		map.put("nom", fieldType.VARCHAR);
+		map.put("tel", fieldType.VARCHAR);
 		map.put("mail", fieldType.VARCHAR);
 		map.put("adresse", fieldType.VARCHAR);
 
-		values = "(" + idFamille + "," + nom  + "," + mail + "," + adresse +"')";
+		values = "(" + idFamille + "," +tel +"," + nom  + "," + mail + "," + adresse +"')";
 	}
 	@Override
 	public String getValues() {
@@ -39,7 +42,7 @@ public class Famille implements IData {
 	}
 
 	@Override
-	public boolean check(HashMap<String, fieldType> tableStruct) {	//il faut mettre la meme a chaque fois ??
+	public boolean check(HashMap<String, fieldType> tableStruct) {	
 		for (String num:map.keySet()) {
 			if(!tableStruct.containsKey(num)) {
 				System.out.println("il manque : "+num);
@@ -55,7 +58,7 @@ public class Famille implements IData {
 
 	@Override
 	public String toString() {
-		return "Famille [idFamille=" + idFamille + ", nom=" + nom + ", mail=" + mail + ", adresse=" + adresse
+		return "Famille [idFamille=" + idFamille + ", nom=" + nom +", tel=" + tel + ", mail=" + mail + ", adresse=" + adresse
 				+ "]";
 	}
 

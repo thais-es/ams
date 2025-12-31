@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 public class Animal implements IData {
 	private int idAnimal;  
+	private int idBox;
 	private String nom;
 	private Date arrive;  
 	private String type;  
@@ -14,27 +15,31 @@ public class Animal implements IData {
 	private String values;
 	private HashMap<String, fieldType>map;
 	
-	public Animal(int idAnimal, String nom, Date arrive, String type, String race, Date naissance, String statut) {
+	public Animal(int idAnimal, int idBox, String nom, Date arrive, String type, String race, Date naissance, String statut) {
 		super();
 		this.idAnimal = idAnimal;
+		this.idBox=idBox;
 		this.nom = nom;
 		this.arrive = arrive;
 		this.type = type;
 		this.race = race;
 		this.naissance = naissance;
 		this.statut = statut;
+		map = new HashMap<>();
+		getStruct();
 	}
 
 	@Override
 	public void getStruct() {
 		map.put("idAnimal", fieldType.INT);
+		map.put("idBox", fieldType.INT);
 		map.put("nom", fieldType.VARCHAR);
 		map.put("arrive", fieldType.DATE);
 		map.put("type", fieldType.VARCHAR);
 		map.put("race", fieldType.VARCHAR);
 		map.put("naissance", fieldType.DATE);		
 		map.put("statut", fieldType.VARCHAR);
-		values = "(" + idAnimal + "," + nom + ","+ arrive + ","+ type +","+ race + ","+naissance+";" +statut+"')";
+		values = "(" + idAnimal + ", " + idBox + ", '" + nom + "', '" + arrive + "', '" + type + "', '" + race + "', '" + naissance + "', '" + statut + "')";
 	}
 
 	@Override
@@ -60,7 +65,7 @@ public class Animal implements IData {
 
 	@Override
 	public String toString() {
-		return "Animal [idAnimal=" + idAnimal + ", nom=" + nom + ", arrive=" + arrive + ", type=" + type + ", race="
+		return "Animal [idAnimal= " + idAnimal + " idBox =  "+idBox + " nom=" + nom + ", arrive=" + arrive + ", type=" + type + ", race="
 				+ race + ", naissance=" + naissance + ", statut=" + statut + "]";
 	}
 

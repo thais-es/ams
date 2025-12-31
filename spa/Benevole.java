@@ -9,7 +9,7 @@ public class Benevole implements IData {
 	private String nom;
 	private String prenom; 
 	private String numTel;
-	private String mail;		//srting tt le temps ??
+	private String mail;	
 	private String adresse;
 	private String values;
 	private HashMap<String, fieldType>map;
@@ -24,6 +24,8 @@ public class Benevole implements IData {
 		this.numTel = numTel;
 		this.mail = mail;
 		this.adresse = adresse;
+		map = new HashMap<>();
+		getStruct();
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class Benevole implements IData {
 		map = new HashMap<>();
 		map.put("idBenevole", fieldType.INT);
 		map.put("nom", fieldType.VARCHAR);
-		map.put("prenom", fieldType.VARCHAR);		//text tt le temps  ??
+		map.put("prenom", fieldType.VARCHAR);		
 		map.put("numTel", fieldType.VARCHAR);		
 		map.put("mail", fieldType.VARCHAR);
 		map.put("adresse", fieldType.VARCHAR);

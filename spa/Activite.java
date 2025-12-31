@@ -17,6 +17,8 @@ public class Activite implements IData{
 		this.nom = nom;
 		this.lieu = lieu;
 		this.nbMin = nbMin;
+		map = new HashMap<>();
+		getStruct();
 	}
 	
 

@@ -12,22 +12,26 @@ public class Situation implements IData {
 	private String values;
 	private HashMap<String, fieldType>map;
 	
-	public Situation(int idFamille, String type, String commentaire, Date dateD, Date dateF) {
+	public Situation(int idSituation ,int idFamille, String type, String commentaire, Date dateD, Date dateF) {
 		super();
+		this.idSituation=idSituation;
 		this.idFamille = idFamille;
 		this.type = type;
 		this.commentaire = commentaire;
 		this.dateD = dateD;
 		this.dateF = dateF;
+		map = new HashMap<>();
+		getStruct();
 	}
 
 	@Override
 	public void getStruct() {
-		map.put("idFamille", fieldType.INT);
+		map.put("idsituation", fieldType.INT);
+		map.put("idfamille", fieldType.INT);
 		map.put("type", fieldType.VARCHAR);
 		map.put("commentaire", fieldType.TEXT);
-		map.put("dateD", fieldType.DATE);
-		map.put("dateF", fieldType.DATE);
+		map.put("dated", fieldType.DATE);
+		map.put("datef", fieldType.DATE);
 		values = "(" + idSituation + ", " + idFamille + ", '" + type + "', '" + commentaire + "', '" + dateD + "', '" + dateF + "')";
 	}
 
@@ -54,7 +58,7 @@ public class Situation implements IData {
 
 	@Override
 	public String toString() {
-		return "Situation [idFamille=" + idFamille + ", type=" + type + ", commentaire=" + commentaire + ", dateD="
+		return "Situation [idSituation="+idSituation +"idFamille = "+ idFamille + ", type=" + type + ", commentaire=" + commentaire + ", dateD="
 				+ dateD + ", dateF=" + dateF + "]";
 	}
 

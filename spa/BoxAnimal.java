@@ -5,7 +5,7 @@ import java.util.Map;
 public class BoxAnimal implements IData {
 	private int idBox; 
 	private int idAnimal;
-	private Date dateD; // a voir si on peut utiliser le type date 
+	private Date dateD; 
 	private Date dateF;
 	private String values;
 	private HashMap<String, fieldType>map;
@@ -15,6 +15,8 @@ public class BoxAnimal implements IData {
 		this.idAnimal = idAnimal;
 		this.dateD = dateD;
 		this.dateF = dateF;
+		map = new HashMap<>();
+		getStruct();
 	}
 
 	@Override
@@ -84,7 +86,7 @@ public class BoxAnimal implements IData {
 		map.put("idAnimal", fieldType.INT);
 		map.put("dateD", fieldType.DATE);
 		map.put("dateF", fieldType.DATE);		
-		values = "(" + idBox + "," + idAnimal + ",'" + dateD + "','" + dateF + "')";
+		values = "(" + idBox + ", " + idAnimal + ", '" + dateD + "', '" + dateF + "')";
 	}
 
 	@Override

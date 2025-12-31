@@ -14,6 +14,8 @@ public class Box implements IData {
 		this.idBox = idBox;
 		this.espece = espece;
 		this.capMax = capMax;
+		map = new HashMap<>();
+		getStruct();
 		}
 
 	@Override
@@ -35,7 +37,7 @@ public class Box implements IData {
 	}
 
 	@Override
-	public boolean check(HashMap<String, fieldType> tableStruct) {	//il faut mettre la meme a chaque fois ??
+	public boolean check(HashMap<String, fieldType> tableStruct) {	
 		for (String num:map.keySet()) {
 			if(!tableStruct.containsKey(num)) {
 				System.out.println("il manque : "+num);

@@ -8,6 +8,7 @@ public class FicheAnimal implements IData {
 	private int idFiche;  
 	private int idAnimal;  
 	private Date dSoin;  
+	private String soin;
 	private String ordonnance;  
 	private String commentaire;  
 	private Date prochainRdv;  
@@ -15,28 +16,31 @@ public class FicheAnimal implements IData {
 	private String values;
 	private HashMap<String, fieldType>map;
 	
-	public FicheAnimal(int idFiche, int idAnimal, Date soin, String ordonnance, String commentaire, Date prochainRdv,
-			String maladie) {
+	public FicheAnimal(int idFiche, int idAnimal, Date dsoin, String soin,String ordonnance, String commentaire, Date prochainRdv,String maladie) {
 		super();
 		this.idFiche = idFiche;
 		this.idAnimal = idAnimal;
-		this.dSoin = soin;
+		this.dSoin = dsoin;
+		this.soin=soin;
 		this.ordonnance = ordonnance;
 		this.commentaire = commentaire;
 		this.prochainRdv = prochainRdv;
 		this.maladie = maladie;
+		map = new HashMap<>();
+		getStruct();
 	}
 
 	@Override
 	public void getStruct() {
-		map.put("idFiche", fieldType.INT);
-		map.put("idAnimal", fieldType.INT);
-		map.put("dSoin", fieldType.DATE);
+		map.put("idfiche", fieldType.INT);
+		map.put("idanimal", fieldType.INT);
+		map.put("dsoin", fieldType.DATE);
+		map.put("soin", fieldType.TEXT);
 		map.put("ordonnance", fieldType.TEXT);
 		map.put("commentaire", fieldType.TEXT);
-		map.put("prochainRdv", fieldType.DATE);		
+		map.put("prochainrdv", fieldType.DATE);		
 		map.put("maladie", fieldType.VARCHAR);
-		values = "(" + idFiche + "," + idAnimal + ","+ dSoin + ","+ ordonnance +","+ commentaire + ","+prochainRdv+";" +maladie+"')";
+		values = "(" + idFiche + "," + idAnimal + ","+ dSoin + ","+ ","+ soin + ","+ ordonnance +","+ commentaire + ","+prochainRdv+";" +maladie+"')";
 	}
 
 	@Override
@@ -62,10 +66,11 @@ public class FicheAnimal implements IData {
 
 	@Override
 	public String toString() {
-		return "FicheAnimal [idFiche=" + idFiche + ", idAnimal=" + idAnimal + ", dSoin=" + dSoin + ", ordonnance="
+		return "FicheAnimal [idFiche=" + idFiche + ", idAnimal=" + idAnimal + ", dSoin=" + dSoin + ", soin=" + soin + ", ordonnance="
 				+ ordonnance + ", commentaire=" + commentaire + ", prochainRdv=" + prochainRdv + ", maladie=" + maladie
 				+ "]";
 	}
+
 
 	@Override
 	public int getId() {

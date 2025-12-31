@@ -160,9 +160,20 @@ public class Gestion {
 	    }
 	}
 
+	public int getNextId(String table, String idColumn) throws SQLException {
+	    Statement st = laConnection.createStatement();
+	    String sql = "SELECT MAX(" + idColumn + ") FROM " + table;
+	    ResultSet rs = st.executeQuery(sql);
+
+	    if (rs.next()) {
+	        return rs.getInt(1) + 1; // dernier ID + 1
+	    }
+	    return 1; // si la table est vide
+	}
+	
 /*ANIMAL
- * public void searchAnimal(String critereSQL)
- * */
+ * public void searchAnimal(String critereSQL)   // Pourquoi avec critere et pas id plutot ??
+ * */ 
 	/**
 	 * permet de chercher un animal par rapport a un critere
 	 * @param critereSQL est de la forme "race=chat"
@@ -170,6 +181,11 @@ public class Gestion {
 	 */
 	public void chercheAnimal(String critereSQL) throws SQLException{
 		String sql = "SELECT * FROM animal WHERE " + critereSQL; 
+		displayQuery(sql);//il manque un message si il y a rien
+	}
+	
+	public void chercheAnimalId(int IdAnimal) throws SQLException{
+		String sql = "SELECT * FROM animal WHERE IdAnimal = " + IdAnimal; 
 		displayQuery(sql);
 	}
 /*SITUATIONANIMAL
@@ -260,14 +276,20 @@ public class Gestion {
 		String sql = "SELECT * FROM benevole WHERE " + critereSQL; 
 		displayQuery(sql);
 	}
+	
 /*GRPBENEVOLE
  * public void besoinBenevoles(int idCreno)  // je lai mis en void pr savoir combien de benevole on a besoin  
 */
+	/**
+	 * Calcule si on a besoin de benevoles pour un creno ou pas 
+	 * @param idCreno
+	 * @throws SQLException
+	 */
 	public void besoinBenevoles(int idCreno) throws SQLException{
 		String sql ="SELECT a.nbMin, COUNT(gb.idBenevole) AS nbBeneInscrits " +
 					"FROM Groupe g " +
 					"JOIN Activite a ON g.idAct=a.idAct"+
-					"LEFT JOIN GrpBenvole gb ON g.idGrp=gb.idGrp"+
+					"LEFT JOIN GrpBenevole gb ON g.idGrp=gb.idGrp"+
 					"WHERE g.idCreneau =" + idCreno + " "+
 					"GROUP BY a.nbMin";
 		Statement st = laConnection.createStatement();
@@ -288,6 +310,10 @@ public class Gestion {
 		}
 	}
 	
+	public void chercheBenevoleId(int IdBene) throws SQLException{
+		String sql = "SELECT * FROM Benevole WHERE IdBenevole = " + IdBene; 
+		displayQuery(sql);
+	}
 
 	
 /*CRENAUX
@@ -296,21 +322,160 @@ public class Gestion {
  * afficher activite
  * remplacer une activite
 */
-	/*public void inscrireParticipant(int idAct, int idParticipant, String role) throws SQLException {
-		String sqlGrp="SELECT idGrp FROM Groupe WHERE idAct="+idAct;
+	
+	/**
+	 * inscrit un participant (bénévole ou animal en fonction à une activité en fonction de l'acticité et du créneau
+	 * @param idAct
+	 * @param idCreno
+	 * @param idParticipant
+	 * @param type
+	 * @throws SQLException
+	 */
+	public void inscrireParticipant(int idAct, int idCreno, int idParticipant, String type) throws SQLException {
 		Statement st = laConnection.createStatement();
+		String sqlGrp="SELECT idGrp FROM Groupe WHERE idAct="+idAct + " AND idCreneau = " + idCreno;
 		ResultSet rs = st.executeQuery(sqlGrp);
+		int idGrp; 
 		if(!rs.next()){
-			System.out.println("Il n'y a ");
+			String sqlAjoutGrp = "INSERT INTO Groupe (idAct, idCreneau) VALUES (" + idAct + ", " + idCreno + ")";
+			st.executeUpdate(sqlAjoutGrp, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rsKey = st.getGeneratedKeys();
+			if(rsKey.next()){
+				idGrp=rsKey.getInt(1);
+				System.out.println("Nouveau groupe créé pour l'activité " + idAct + ", et le créneau : " + idCreno);
+			}
+			else {
+				System.out.println("erreur création du groupe" );
+				rs.close();
+				return; 
+			}
+			rsKey.close();
 		}
-	} /*
-	// A COMPLETER POUR LE ROLE 
+		else {
+			idGrp=rs.getInt("idGrp");
+		}
+		rs.close();
+		//inscrire participant en fct du type 
+		if(type.equalsIgnoreCase("bénévole")){
+			//verifer si le bénévole est ideja nscrit
+			String sqlBene="SELECT * FROM GrpBenevole WHERE idGrp = "+idGrp + " AND idBenevole = " + idParticipant;
+			ResultSet rsVerifBene=st.executeQuery(sqlBene);
+			
+			if(rsVerifBene.next()){
+				System.out.println("Le participant "+idParticipant + "est deja inscrit à l'activité " + idAct);
+				rsVerifBene.close();
+				st.close();
+				return; 
+			}
+			rsVerifBene.close();
+			
+			//inscrire le bénévole 
+			String sqlAjoutBene = "INSERT INTO GrpBenevole (idGrp, idBenevole) (" + idGrp + ", "+idParticipant+ " )";
+			st.executeUpdate(sqlAjoutBene);
+			System.out.println("Bénévole "+ idParticipant + "est bien inscrit à l'activité"+ idAct);
+		}
+		else if (type.equalsIgnoreCase("animal")) {
+			//verifer si l'animal est ideja nscrit
+			String sqlVerifAni="SELECT * FROM GrpAnimal WHERE idGrp = "+idGrp + " AND idAnimal = " + idParticipant;
+			ResultSet rsVerifAni=st.executeQuery(sqlVerifAni);
+			if(rsVerifAni.next()){
+				System.out.println("L'animal "+idParticipant + "est deja inscrit à l'activité " + idAct);
+				rsVerifAni.close();
+				st.close();
+				return; 
+			}
+			rsVerifAni.close();
+			
+			//inscrire le bénévole 
+			String sqlAjoutAni = "INSERT INTO GrpAnimal (idGrp, idAnimal) (" + idGrp + ", "+idParticipant+ " )";
+			st.executeUpdate(sqlAjoutAni);
+			System.out.println("Animal "+ idParticipant + "est bien inscrit à l'activité"+ idAct);
+		}
+		else {
+			System.out.println("Mauvais type"+type +" (mettre 'animal' ou 'bénévole')");
+		}
+		st.close();
+	}
+
+
+	
+	/**
+	 * Affiche quels sont les benevoles et participants des activité en fonction d'un creneau
+	 * @param idCreno
+	 * @throws SQLException
+	 */
+
+	public void afficherParticipant(int idCreno) throws SQLException{
+		Statement st = laConnection.createStatement();
+		String sqlGrp = "SELECT g.idGrp, g.idAct, a.nom AS activite " + 
+						"FROM Groupe g " +
+						"JOIN Activite a ON g.idAct = a.idAct " +
+						"WHERE g.idCreneau = " + idCreno;
+		ResultSet rsGrp = st.executeQuery(sqlGrp);
+		if(!rsGrp.next()) {
+			System.out.println("Il n'y a aucun goupe pour le créneau : " +idCreno);
+			st.close();
+			return;
+		}
+		int idGrp =rsGrp.getInt("idGrp");
+		int idAct =rsGrp.getInt("idAct");
+		String activite =rsGrp.getString("activite");
+		System.out.println("Activité : " + activite+ " id : " + idAct);
+		String sqlBene = "SELECT b.idBenevole, b.nom, b.prenom "+
+						"FROM GrpBenevole gB " +
+						"JOIN Benevole b ON gB.idBenevole=b.idBenevole "+
+						"WHERE gB.idGrp = " + idGrp;
+		
+		ResultSet rsBene = st.executeQuery(sqlBene);
+		System.out.println("Benevoles pour l'activité : ");
+		boolean benevoleAct = false; 
+		while (rsBene.next()) {
+			benevoleAct =true;
+			int idBene= rsBene.getInt("idBenevole");
+			String nom = rsBene.getString("nom");
+			String prenom = rsBene.getString("prenom");
+			System.out.println("- " + nom + " "+prenom+ " id : " + idBene);
+		}
+		if(!benevoleAct) {
+			System.out.println("Il n'y a pas de benevoles pour cette activité ");
+		}
+		rsBene.close();
+		
+		String sqlAni = "SELECT a.idAnimal, a.nom, a.type "+
+				"FROM GrpAnimal gA " +
+				"JOIN Animal a ON gA.idAnimal=a.idAnimal "+
+				"WHERE gA.idGrp = " + idGrp;
+
+		ResultSet rsAni = st.executeQuery(sqlAni);
+		System.out.println("Animaux pour l'activité : ");
+		boolean animalAct= false; 
+		while (rsAni.next()) {
+			animalAct =true;
+			int idAnimal= rsAni.getInt("idAnimal");
+			String nom = rsAni.getString("nom");
+			String type = rsAni.getString("type");
+			System.out.println("* " + nom + " "+type+ " id : " + idAnimal);
+		}
+		if(!animalAct) {
+			System.out.println("Il n'y a pas d'animal pour cette activité ");
+		}
+		rsAni.close();
+		st.close();
+	}
 
 /*BOX
- * Ajouter un animal dans un box 
- * Améliorer capacité
- * Enlever / déplacer un animal*/
+ * Ajouter un animal dans un box -->fait 
+ * Améliorer capacité (??)
+ * Enlever / déplacer un animal --> fait 
+ * */
 	
+	/**
+	 * ajoute en animal en calculant la capacité et en modifiant les dates de debut et de fin 
+	 * @param idBox
+	 * @param idAnimal
+	 * @param dateD
+	 * @throws SQLException
+	 */
 	//A voir si pour la date on met valueOf(LocalDate.now()); pour avoir direct la date 
 	public void ajoutAnimalBox(int idBox, int idAnimal, Date dateD) throws SQLException {
 		String sqlCptAnimaux="SELECT COUNT(*) AS nbAnimaux FROM BoxAnimal WHERE idBox= " +idBox;
@@ -335,14 +500,22 @@ public class Gestion {
 			st.close();
 			return;
 		}
-		String sqlajoutBoxAnimal="INSERT INTO BoxAnimal(idBox, idAnimal, dateD, dateF)"+
-								"VALUES (" + idBox +", "+idAnimal+", "+dateD+", "+"NULL )";
+		String sqlajoutBoxAnimal = "INSERT INTO BoxAnimal (idBox, idAnimal, dateD, dateF) "
+				+ "VALUES (" + idBox + ", " + idAnimal + ", '" + dateD + "', NULL)";
 		st.executeUpdate(sqlajoutBoxAnimal);
 		System.out.println("L'animal "+ idAnimal + " est ajouté dans le box " +idBox );
 		st.close();
 		
 	}
 	
+	/**
+	 * deplace l'animal d'un box à un autre en calculant la capacité et en modifiant les dates de debut et de fin 
+	 * @param idAnimal
+	 * @param idAncienBox
+	 * @param idNvBox
+	 * @param date
+	 * @throws SQLException
+	 */
 	//j'ai mis que la date de debut et de fin sont les memes 
 	public void deplacerAnimal(int idAnimal, int idAncienBox, int idNvBox, Date date) throws SQLException {
 		Statement st = laConnection.createStatement();
@@ -380,4 +553,25 @@ public class Gestion {
 		System.out.println("Animal : " + idAnimal + ", Ancien box : "+ idAncienBox +", Nouveau Box : " + idNvBox);
 		st.close();
 	}
+	
+	/**
+	 * supprime l'animal d'un box ou il etait 
+	 * @param idAnimal
+	 * @param idBox
+	 * @param dateF
+	 * @throws SQLException
+	 */
+	public void suppAnimal(int idAnimal, int idBox, Date dateF) throws SQLException {
+		String sqlModif="UPDATE BoxAnimal SET dateF = '"+dateF+"' " + "WHERE idBox = " +idBox + "AND idAnimal = " +idAnimal + "AND dateF IS NULL";
+		Statement st = laConnection.createStatement();
+		int modifLigne=st.executeUpdate(sqlModif);
+		if(modifLigne>0) {
+			System.out.println("L'animal "+idAnimal+ " n'est plus dans le box " + idBox);
+		}
+		else {
+			System.out.println("Erreur, l'animal "+idAnimal +" n'est pas trouvé dans le box");
+		}
+	}
+
+	
 }
